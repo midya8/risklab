@@ -1,0 +1,42 @@
+name: Exact risk evidence
+on:
+  push:
+  pull_request:
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install setuptools wheel
+      - run: python -m unittest discover -s tests -v
+      - run: python tools/check_installed.py
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+      - run: node --test --test-concurrency=1 tests/test_engine.cjs tests/test_browser.cjs
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+  numerical-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install scipy==1.15.3
+      - run: python tools/check_highs.py
