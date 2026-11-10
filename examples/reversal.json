@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "alpha": [
+    1,
+    4
+  ],
+  "nodes": [
+    {
+      "kind": "chance",
+      "children": [
+        1,
+        2
+      ],
+      "probabilities": [
+        [
+          3,
+          4
+        ],
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "kind": "decision",
+      "children": [
+        3,
+        4
+      ]
+    },
+    {
+      "kind": "decision",
+      "children": [
+        5,
+        6
+      ]
+    },
+    {
+      "kind": "chance",
+      "children": [
+        7,
+        8
+      ],
+      "probabilities": [
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "kind": "chance",
+      "children": [
+        9,
+        10
+      ],
+      "probabilities": [
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "kind": "chance",
+      "children": [
+        11,
+        12
+      ],
+      "probabilities": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "kind": "chance",
+      "children": [
+        13,
+        14
+      ],
+      "probabilities": [
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "kind": "terminal",
+      "loss": 2
+    },
+    {
+      "kind": "terminal",
+      "loss": -2
+    },
+    {
+      "kind": "terminal",
+      "loss": 3
+    },
+    {
+      "kind": "terminal",
+      "loss": -3
+    },
+    {
+      "kind": "terminal",
+      "loss": 10
+    },
+    {
+      "kind": "terminal",
+      "loss": 8
+    },
+    {
+      "kind": "terminal",
+      "loss": 4
+    },
+    {
+      "kind": "terminal",
+      "loss": 10
+    }
+  ]
+}
