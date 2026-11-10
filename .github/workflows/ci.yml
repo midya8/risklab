@@ -2,6 +2,8 @@ name: Exact risk evidence
 on:
   push:
   pull_request:
+permissions:
+  contents: read
 jobs:
   python:
     runs-on: ubuntu-latest
