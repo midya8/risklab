@@ -1,8 +1,13 @@
 # RiskLab
 
-Exact finite scenario-tree decisions under **static CVaR and nested conditional CVaR**. A supplied tree, every full deterministic policy, every terminal probability, split boundary-atom mass and independently replayable risk certificates. Dependency-free Python 3.10+ and a separate BigInt browser inspector.
+RiskLab compares static CVaR and nested conditional CVaR on a supplied finite
+scenario tree. It enumerates every full deterministic policy on that tree and shows terminal
+probabilities, tail weights and independently replayable certificates. The two
+objectives can select different policies.
 
-## The plan you would change
+Python 3.10+, no runtime dependencies, with a separate BigInt browser inspector.
+
+## Static and nested policy choices
 
 The original `reversal` control has confidence alpha `1/4`. A first observation reaches two decisions with probabilities `3/4` and `1/4`. Each decision chooses between two small loss lotteries. Enumerating all four policies gives:
 
@@ -23,7 +28,7 @@ The `ignored_branch` tree reaches a decision on a low-loss branch with probabili
 
 Nested CVaR is not strictly monotone. RiskLab does **not** claim that every nested-root-optimal policy has optimal continuations. It separately exposes the root-optimal set, a first-index Bellman-selected policy and reached-decision continuation regrets. Off-path choices remain distinct full policies, and zero nominal reach does not invent a conditional posterior.
 
-## One tail is not a fresh tail at every node
+## Static and nested tail calculations
 
 At confidence alpha, `1-alpha` is the upper loss-tail probability. For a finite loss law:
 
@@ -57,15 +62,15 @@ python tools/check_highs.py
 
 The browser lets you edit the complete exact input, select every full policy, inspect all leaf/node/continuation rows and nested chance-node certificates, and download the full report for native replay. Editing invalidates the old report and disables download until a successful run. All calculations stay local. No API, network model, paid service, private data or dataset is used.
 
-## Independent evidence
+## Verification
 
 - 16 Python tests. Tail-fill generation is checked by a separate path-enumeration and bounded-simplex-vertex checker, with no generator imports. The checker rejects 1,608 separately altered non-input primitive leaves in the reversal report, including hidden fields, and uses strict types rather than Python's boolean/integer equality.
 - 821 complete Python/checker/BigInt report comparisons, serialized losslessly, covering twelve controls, 80 seeded trees and all 729 combinations of a declared four-leaf loss/confidence/branch-law grid. This covers 1,121 full policies. A six-level control has denominators beyond `2**53`; ordinary `JSON.parse` is not used to validate those exact integers.
-- Actual SciPy 1.15.3 HiGHS executes 9,896 primal/dual LP solves across all 821 problems, checking every policy's root risk and every nested chance certificate. Worst absolute objective error is below `1.8e-15`, compared with a `1e-8` tolerance. This is a small reference check, not a speed or scale benchmark. Production has no SciPy dependency.
-- A fresh installed wheel checks six module origins in `site-packages`, all twelve controls through both console and module entrypoints, and 24 direct plus 48 CLI forgery rejections outside the checkout.
-- Actual Chrome checks 36 control/width reports at 1280, 390 and 320 pixels, 216 policy selections, 1,518 leaf rows, 2,334 node rows, 696 continuation rows, 120 nested chance proofs and twelve trusted completed downloads checked by the native verifier. Full screenshots cover every control, scrolled table states and an invalid-input state. Pixel/deployment completion is tracked separately from local behavior checks.
+- The optional SciPy 1.15.3 HiGHS reference executes 9,896 primal/dual LP solves across all 821 problems, checking every policy's root risk and every nested chance certificate. Worst absolute objective error is below `1.8e-15`, compared with a `1e-8` tolerance. This is a small reference check, not a speed or scale benchmark. Production has no SciPy dependency.
+- The installed-wheel check builds a wheel and runs outside the checkout. It checks six module origins in `site-packages`, all twelve controls through both console and module entrypoints, and 24 direct plus 48 CLI forgery rejections outside the checkout.
+- Actual Chrome checks 36 control/width reports at 1280, 390 and 320 pixels, 216 policy selections, 1,518 leaf rows, 2,334 node rows, 696 continuation rows, 120 nested chance proofs and twelve trusted completed downloads checked by the native verifier. The browser tests cover scrolled table states and invalid-input clearing. These checks cover the declared controls and widths, not every input or device.
 
-## Strict scope and honest limits
+## Input scope and limits
 
 Input is exactly `version`, `alpha` and `nodes`. Nodes are terminal losses, chance nodes or decision nodes. Node 0 is the root. Every other node has exactly one structural parent, and children have later IDs. No shared subtrees or cycles. Each nonterminal has one to three children. Chance probabilities sum exactly to one; zero edges remain visible. One confidence alpha in `[0,1)` applies at every chance node. Terminal losses only, no intermediate costs, discount, hidden state, learning or ambiguous probability model.
 
